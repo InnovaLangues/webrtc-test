@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>WEBRTC - TEST</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="stylesheet" type="text/css" href="css/main.css">
+        <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+        <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+        <script type="text/javascript" src="js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="js/webrtc-adapter.js"></script>
+        <script type="text/javascript" src="js/RecordRTC.js"></script>
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h3>RecordRTC - TEST - 06 Novembre 2015</h3>
+                    <canvas class="pull-right" id="analyser" title="Mic level" width="25px" height="34px"></canvas>
+                </div>
+            </div>
+            <hr/>
+            <div id="audioRecorderRow" class="row">
+                <div class="col-md-4 text-center">
+                    <div class="btn-group">
+                        <button class="btn btn-danger glyphicon glyphicon-record" id="audio-record-start" title="Commencer l'enregistrement" onclick="recordAudio()"></button>
+                        <button class="btn btn-default glyphicon glyphicon-stop" id="audio-record-stop" title="Arrêter l'enregistrement" disabled="disabled" onclick="stopRecordingAudio()"></button>
+                        <button class="btn btn-default glyphicon glyphicon-play" id="audio-play" title="Ecouter le fichier audio" disabled="disabled" onclick="playAudio()"></button>
+                        <button class="btn btn-default glyphicon glyphicon-download" id="audio-download" title="Télécharger le fichier audio" disabled="disabled" onclick="downloadAudio()"></button>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <h4>Audio Seulement - Marche sur Chrome (WAV) et Firefox (OGG)</h4>
+                </div>
+            </div>
+            <hr/>
+            <div id="videoRecorderRow" class="row">
+                <div class="col-md-4">
+                    <div class="btn-group">
+                        <button class="btn btn-danger glyphicon glyphicon-record" id="video-record-start" title="Commencer l'enregistrement" onclick="recordVideo()"></button>
+                        <button class="btn btn-default glyphicon glyphicon-stop" id="video-record-stop" title="Arrêter l'enregistrement" disabled="disabled" onclick="stopRecordingVideo()"></button>
+                        <button class="btn btn-default glyphicon glyphicon-download" id="video-download" title="Télécharger le fichier audio" disabled="disabled" onclick="downloadVideo()"></button>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <video controls muted style="width:250px"></video>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+        <script type="text/javascript" src="js/recorder.js"></script> 
+
+    </body>
+</html>

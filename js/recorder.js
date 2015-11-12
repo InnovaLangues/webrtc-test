@@ -20,6 +20,7 @@ var gradient;
 
 var aid = 0; // audio array current recording index 
 var aRecorders = [];
+var aStream;
 
 
 function recordAudio() {
@@ -41,6 +42,8 @@ function recordAudio() {
         
         audioRecorder.startRecording();
         gotStream(audioStream);
+        
+        aStream = audioStream;
 
         audioStream.onended = function () {
             console.log('stream ended');
@@ -126,6 +129,9 @@ function stopRecordingAudio() {
         });
         
         aid++;
+        
+        // stop sharing microphone
+        if(aStream) aStream.stop();
         
     });
 }

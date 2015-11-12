@@ -16,37 +16,64 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <h3>RecordRTC - TEST - 06 Novembre 2015</h3>
+                    <h3>RecordRTC - TEST</h3>
                     <canvas class="pull-right" id="analyser" title="Mic level" width="25px" height="34px"></canvas>
                 </div>
             </div>
             <hr/>
-            <div id="audioRecorderRow" class="row">
-                <div class="col-md-4 text-center">
-                    <div class="btn-group">
-                        <button class="btn btn-danger glyphicon glyphicon-record" id="audio-record-start" title="Commencer l'enregistrement" onclick="recordAudio()"></button>
-                        <button class="btn btn-default glyphicon glyphicon-stop" id="audio-record-stop" title="Arrêter l'enregistrement" disabled="disabled" onclick="stopRecordingAudio()"></button>
-                        <button class="btn btn-default glyphicon glyphicon-play" id="audio-play" title="Ecouter le fichier audio" disabled="disabled" onclick="playAudio()"></button>
-                        <button class="btn btn-default glyphicon glyphicon-download" id="audio-download" title="Télécharger le fichier audio" disabled="disabled" onclick="downloadAudio()"></button>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Audio Seulement - Marche sur Chrome (WAV) et Firefox (OGG)</h3>
+                </div>
+                <div class="panel-body">
+                    <div id="audioRecorderRow" class="row">
+                        <div class="col-md-12 text-center">
+                            <div class="btn-group">
+                                <button class="btn btn-danger glyphicon glyphicon-record" id="audio-record-start" title="Commencer l'enregistrement" onclick="recordAudio()"></button>
+                                <button class="btn btn-default glyphicon glyphicon-stop" id="audio-record-stop" title="Arrêter l'enregistrement" disabled="disabled" onclick="stopRecordingAudio()"></button>
+                            </div>
+                        </div>
+                    </div>
+                    <hr/>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="audio-records-container">
+                                
+                                <div class="row text-center">
+                                    <div class="col-md-12">
+                                        <h3>Mes enregistrements audio</h3>
+                                    </div>
+                                </div>
+                                <hr/>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-8">
-                    <h4>Audio Seulement - Marche sur Chrome (WAV) et Firefox (OGG)</h4>
-                </div>
             </div>
-            <hr/>
-            <div id="videoRecorderRow" class="row">
-                <div class="col-md-4">
-                    <div class="btn-group">
-                        <button class="btn btn-danger glyphicon glyphicon-record" id="video-record-start" title="Commencer l'enregistrement" onclick="recordVideo()"></button>
-                        <button class="btn btn-default glyphicon glyphicon-stop" id="video-record-stop" title="Arrêter l'enregistrement" disabled="disabled" onclick="stopRecordingVideo()"></button>
-                        <button class="btn btn-default glyphicon glyphicon-download" id="video-download" title="Télécharger le fichier audio" disabled="disabled" onclick="downloadVideo()"></button>
+
+
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Audio + Vidéo</h3>
+                </div>
+                <div class="panel-body">
+                    <div id="videoRecorderRow" class="row">
+                        <div class="col-md-4">
+                            <div class="btn-group">
+                                <button class="btn btn-danger glyphicon glyphicon-record" id="video-record-start" title="Commencer l'enregistrement" onclick="recordVideo()"></button>
+                                <button class="btn btn-default glyphicon glyphicon-stop" id="video-record-stop" title="Arrêter l'enregistrement" disabled="disabled" onclick="stopRecordingVideo()"></button>
+                                <button class="btn btn-default glyphicon glyphicon-download" id="video-download" title="Télécharger le fichier audio" disabled="disabled" onclick="downloadVideo()"></button>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <video controls muted style="width:250px"></video>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-8">
-                    <video controls muted style="width:250px"></video>
-                </div>
             </div>
+
         </div>
 
 

@@ -1,6 +1,6 @@
 
+var isFirefox = !!navigator.mozGetUserMedia;
 
-var recorderType = 'audio';
 var audioObject;
 var audioRecorder; // WebRtc object
 
@@ -9,8 +9,6 @@ var videoPlayer = document.querySelector('video');
 
 
 var audioContext = new window.AudioContext();
-
-
 var audioInput = null,
         realAudioInput = null,
         inputPoint = null;
@@ -19,18 +17,14 @@ var analyserContext = null;
 var canvasWidth, canvasHeight;
 var gradient;
 
-$(document).ready(function () {
-    console.log('ready');
 
-});
+var aid = 0; // audio array current recording index 
+var aRecorders = [];
 
 
 function recordAudio() {
 
     captureUserMedia({audio: true}, function (audioStream) {
-        //audioPlayer.srcObject = audioStream;
-        //audioPlayer.muted = true;
-        //audioPlayer.play();
 
         $('#audio-record-start').prop('disabled', 'disabled');
         $('#audio-play').prop('disabled', 'disabled');
@@ -38,17 +32,10 @@ function recordAudio() {
         $('#audio-download').prop('disabled', 'disabled');
 
         var options = {
-            mimeType : 'audio/ogg', // or video/mp4 or audio/ogg
-            bitsPerSecond: 128000
-        };
-
-        /*audioRecorder = RecordRTC(audioStream, {
-            type: 'audio',
+            type : 'audio',
             bufferSize: 0,
-            sampleRate: 44100,
-            leftChannel: false,
-            disableLogs: false
-        });*/
+            sampleRate: 32000
+        };       
         
         audioRecorder = RecordRTC(audioStream, options);
         
@@ -97,6 +84,7 @@ function recordVideo() {
 }
 
 function stopRecordingAudio() {
+    var aRec = audioRecorder;
     audioRecorder.stopRecording(function (url) {
         cancelAnalyserUpdates();
 
@@ -107,8 +95,84 @@ function stopRecordingAudio() {
 
         audioObject = new Audio();
         audioObject.src = url;
+        
+        var html = '<div class="row">';
+        html += '       <div class="col-md-8">';        
+        html += '           <audio controls src="'+url+'">';
+        html += '       </div>';
+        html += '       <div class="col-md-4">';        
+        html += '           <div class="btn-group">';
+        html += '               <button class="btn btn-default glyphicon glyphicon-download" data-id="'+aid+'" id="audio-down-'+aid.toString()+'" title="Télécharger le fichier audio"></button>';
+        html += '               <button class="btn btn-default glyphicon glyphicon-upload" data-id="'+aid+'" id="audio-up-'+aid.toString()+'" title="Téléverser le fichier audio"></button>';
+        html += '           </div>';
+        html += '       </div>';    
+        html += '   </div>';
+        html += '   <hr/>';
+        $('#audio-records-container').append(html);       
+       
+        aRecorders.push(aRec);
+        
+        $('#audio-down-' + aid.toString()).on('click', function(){            
+            var index = parseInt($(this).data('id'));
+            aRecorders[index].save();
+        });
+        
+        $('#audio-up-' + aid.toString()).on('click', function(){
+            console.log('aid ' + aid);
+            console.log($(this).data('id'));
+            console.log(aRecorders);
+            var index = parseInt($(this).data('id'));
+            uploadAudio(aRecorders[index], index);
+        });
+        
+        aid++;
+        
     });
 }
+
+function uploadAudio (recorder, id){
+    console.log('upload called');
+    var blob = recorder.getBlob();    
+    var formData = new FormData();
+    
+    var fileName = isFirefox ? id.toString() + '-uploaded.ogg' : id.toString() + '-uploaded.wav';
+    
+    formData.append('filename', fileName);
+    if(isFirefox){
+        formData.append('nav', 'firefox');
+    }
+    else{
+        formData.append('nav', 'chrome');
+    }
+    formData.append('blob', blob);
+    xhr('saveAudio.php', formData, null, function(fileURL) {});
+}
+
+function xhr(url, data, progress, callback) {
+    var request = new XMLHttpRequest();
+    request.onreadystatechange = function() {
+        if (request.readyState === 4 && request.status === 200) {
+            
+            var track = JSON.parse(request.responseText);
+            console.log(track);
+            alert('votre fichier a bien été uploadé ' + track.url);
+            
+        }
+    };
+    request.upload.onprogress = function(e) {
+        if (!progress) return;
+        if (e.lengthComputable) {
+            progress.value = (e.loaded / e.total) * 100;
+            progress.textContent = progress.value;
+        }
+        if (progress.value === 100) {
+            progress.value = 0;
+        }
+    };
+    request.open('POST', url);
+    request.send(data);
+}
+
 
 function stopRecordingVideo() {
     videoRecorder.stopRecording(function (url) {
@@ -138,21 +202,8 @@ function captureUserMedia(mediaConstraints, successCallback, errorCallback) {
     navigator.mediaDevices.getUserMedia(mediaConstraints).then(successCallback).catch(errorCallback);
 }
 
-function playAudio() {
-    audioObject.play();
-    audioObject.onended = function () {
-        audioObject.pause();
-    };
-}
-
-
-
 function downloadVideo() {
     videoRecorder.save();
-}
-
-function downloadAudio() {
-    audioRecorder.save();
 }
 
 
